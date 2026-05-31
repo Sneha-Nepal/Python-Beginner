@@ -1,4 +1,4 @@
-# Python Beginner Projects
+# Simple Projects
 
 These are the beginner projects to practice the foundational skills in python. 
 
