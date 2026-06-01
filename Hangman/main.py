@@ -1,11 +1,35 @@
 import random
+import word_bank as wb
 
-word_list = ["cat", "dog", "python", "developer", "hangman", "quiz", "jazz", "fuzzy", "programming", "mystery"]
+# Uniquness: Filtering the word_list i.e allowing user to choose the category for the word
+while True:
+
+    choose_category = int(input("Which category do you want the word from? Science = 1, world = 2, people = 3, programming = 4, random = 5\n"))
+
+    if choose_category == 1:
+        word_list =  wb.science
+        break
+    elif choose_category == 2:
+        word_list = wb.world
+        break
+    elif choose_category == 3:
+        word_list = wb.people
+        break
+    elif choose_category == 4:
+        word_list = wb.programming
+        break
+    elif choose_category == 5:
+        word_list = wb.random_list
+        break
+    else:
+        print("Choose from 1 - 5 only.")
+
 
 word = random.choice(word_list)
 word_as_list = list(word)
 # print(" ".join(word_as_list)) # For reference
 
+# The game core programming concept is from here
 placeholder = []
 
 for space in range(len(word)):
@@ -22,6 +46,7 @@ while not game_over:
     
     if user_guess in placeholder:
         print("Already Guessed it")
+        continue
 
     for index in range(len(word)):
         if user_guess == word[index]:
