@@ -1,27 +1,49 @@
 alphabets = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
-process = input("Encode or Decode: ").lower()
-msg = input("Message: ").lower()
-shift = int(input("Shift Number: "))
+# Encode and decode (combined function)
+def ceaser(process, og_text, shift_num):
+    output_lst = []
 
-def encrypt(og_text, shift_num):
-    lst = []
-    for letter in og_text:
+    for letter in og_text:        
+        # If the message contains symbols or numbers then print it as it is
+        if letter not in alphabets:
+            output_lst.append(letter)
+
         indx = alphabets.index(letter)
-        num = shift_num + indx
-        while num >= 26:
-            num -= 26
+        
+        if process == "encode":
+            num = shift_num + indx
+            #For index out of range
+            while num >= 26:
+                num -= 26
+        elif process == "decode":
+            # % 26 is for index out of range
+            num = (indx - shift_num) % 26
+        else:
+            print("Type either 'encrypt' or 'decrypt': ")
+            break
 
-        lst.append(alphabets[num])
-    
-    print("".join(lst))
 
-def decrypt():
-    pass
+        output_lst.append(alphabets[num])
 
-if process == "encode" or process == "e":
-    encrypt(msg, shift)
-elif process == "decode" or process == "d":
-    decrypt()
-else:
-    print("Type either 'encrypt' or 'decrypt'. Also, either 'e' or 'd': ")
+    print(f"The {process}d message: {"".join(output_lst)}")
+
+
+go_again = True
+while go_again:
+    # User input
+    process = input("Encode or Decode: ").lower()
+    msg = input("Message: ").lower()
+    shift = int(input("Shift Number: "))
+
+    # Main function and working
+    ceaser(process, msg, shift)
+
+    # Restart again the program again?
+    print("Do you want to restart?")
+    yes_or_no = input("Yes or No: ").lower()
+    if yes_or_no == "no":
+        go_again = False
+        break
+
+print("Come back again!")
