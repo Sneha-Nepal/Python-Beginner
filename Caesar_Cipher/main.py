@@ -8,6 +8,7 @@ def ceaser(process, og_text, shift_num):
         # If the message contains symbols or numbers then print it as it is
         if letter not in alphabets:
             output_lst.append(letter)
+            continue
 
         indx = alphabets.index(letter)
         
@@ -26,7 +27,8 @@ def ceaser(process, og_text, shift_num):
 
         output_lst.append(alphabets[num])
 
-    print(f"The {process}d message: {"".join(output_lst)}")
+    final_text = "".join(output_lst)
+    return final_text
 
 
 go_again = True
@@ -35,9 +37,18 @@ while go_again:
     process = input("Encode or Decode: ").lower()
     msg = input("Message: ").lower()
     shift = int(input("Shift Number: "))
+    double_lock = input("Double encrypt or decrypt? Yes or No: ").lower()
 
     # Main function and working
-    ceaser(process, msg, shift)
+    first_msg = ceaser(process, msg, shift)
+
+    if double_lock == 'yes':
+        second_shift = int(input("Shift Number: "))
+        second_msg = ceaser(process, first_msg, second_shift)
+        print(f"The {process}d message: {second_msg}")
+    else:
+        print(f"The {process}d message: {first_msg}")
+
 
     # Restart again the program again?
     print("Do you want to restart?")
