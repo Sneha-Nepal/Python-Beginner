@@ -26,7 +26,11 @@ def add_cards(player_cards):
     another_card = random.choice(cards)
     player_cards.append(another_card)
 
-    print(f"Dealer Card: {comp_cards[0]} & hidden")
+    if player_cards == comp_cards:
+        print(f"Dealer Card: {comp_cards}")
+    else:
+        print(f"Dealer Card: {comp_cards[0]} & hidden")
+
     print(f"Your Card: {user_cards}")
 
 def calculator(lst):
@@ -43,6 +47,8 @@ def final_score(total_user, total_comp):
         print("You Win!")
     elif total_user > total_comp:
         print("You Win!")
+    elif total_comp == total_user:
+        print("Draw!")
     else:
         print("You Lose!")
     
@@ -58,20 +64,23 @@ if start == 'y':
         if next_move == 'hit':
             add_cards(user_cards)
             total_user = calculator(user_cards)
-            total_comp = calculator(comp_cards)  
             if total_user > 21:
                 print("You went over 21!")
-                final_score(total_user, total_comp)
                 go_again =False
 
         elif next_move == 'stand':
-            final_score(total_user, total_comp)
+            while sum(comp_cards) < 17:
+                add_cards(comp_cards)
+                total_comp = calculator(comp_cards)
 
             go_again = False
-            break
 
         else:
             print("Type 'y' or 'n' only!")
+
+        #Calculate the total and declare winner
+        if go_again == False:
+            final_score(total_user, total_comp)  
 
 else:
     print("See you soon!")
