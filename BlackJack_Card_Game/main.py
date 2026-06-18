@@ -7,22 +7,31 @@ print("Welcome to BlackJack Card Game!")
 start= input("Would you like to start?'y' or 'n': ")
 
 # to store the cards of user(initials and the ones being added)
-comp_cards = [] 
-user_cards = []
+# comp_cards = [] 
+# user_cards = []
 
-def deal_initial_cards():
-    # stating two cards of dealer and user, but dealer second card is hidden
+total_players = {
+    'comp_cards' : [],
+}
+
+def deal_initial_cards(number_of_players):
+    # stating two cards of dealer and users, but dealer second card is hidden.
 
     for _ in range(2):
-        comp1 = random.choice(cards)
-        user1 = random.choice(cards)
-        comp_cards.append(comp1)
-        user_cards.append(user1)
+        comp_initals = random.choice(cards)
+        total_players['comp_cards'].append(comp_initals)
+        for num in range(number_of_players):
+            user_initals = random.choice(cards)
+            total_players[f"player{num+1}"].append(user_initals) 
+        
 
-    print(f"Dealer Card: {comp_cards[0]} and Hidden")
-    print(f"Your Card: {user_cards}")
+    print(f"Dealer Card: {total_players['comp_cards'][0]} and Hidden")
     #For testing easier
-    print(f"Test_comp_cards: {comp_cards}")
+    print(f"Test_comp_cards: {total_players['comp_cards']}")
+
+    for player_num in range(number_of_players):
+        player_cards = total_players[f"player{player_num + 1}"]
+        print(f"Player{player_num} Card: {player_cards}")
 
 
 def add_cards(player_cards):
@@ -31,10 +40,10 @@ def add_cards(player_cards):
     another_card = random.choice(cards)
     player_cards.append(another_card)
 
-    if player_cards == comp_cards:
-        print(f"Dealer Card: {comp_cards}")
+    if player_cards == total_players['comp_cards']:
+        print(f"Dealer Card: {total_players['comp_cards']}")
     else:
-        print(f"Dealer Card: {comp_cards[0]} & hidden")
+        print(f"Dealer Card: {total_players['comp_cards'][0]} & hidden")
 
     print(f"Your Card: {user_cards}")
 
@@ -63,8 +72,12 @@ def final_score(total_user, total_comp):
 
 
 if start == 'y':
+    number_of_players = int(input("Enter the number of players: "))
+    for i in range(number_of_players):
+        total_players[f"player{i+1}"] = []
+
     #Stating two cards i.e. game start
-    deal_initial_cards()
+    deal_initial_cards(number_of_players)
 
     go_again = True
     while go_again:
@@ -80,9 +93,9 @@ if start == 'y':
 
         # dealer add cards 
         elif next_move == 'stand':
-            while sum(comp_cards) < 17:
-                add_cards(comp_cards)
-                total_comp = calculator(comp_cards)
+            while sum(total_players['comp_cards']) < 17:
+                add_cards(total_players['comp_cards'])
+                total_comp = calculator(total_players['comp_cards'])
 
             go_again = False
 
