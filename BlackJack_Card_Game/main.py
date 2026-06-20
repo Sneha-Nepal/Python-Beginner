@@ -14,6 +14,8 @@ total_players = {
     'comp_cards' : [],
 }
 
+total_sum_cards = []
+
 def deal_initial_cards(number_of_players):
     # stating two cards of dealer and users, but dealer second card is hidden.
 
@@ -45,11 +47,11 @@ def add_cards(player_cards):
     else:
         print(f"Dealer Card: {total_players['comp_cards'][0]} & hidden")
 
-    print(f"Your Card: {user_cards}")
+    print(f"Your Card: {player_cards}")
 
-def calculator(lst):
+def calculator(all_cards):
     # helper function to calculate sum
-    return sum(lst)
+    return sum(all_cards)
 
 
 def final_score(total_user, total_comp):
@@ -81,30 +83,41 @@ if start == 'y':
 
     go_again = True
     while go_again:
-        next_move = input("'hit' or 'stand': ")
+        for player in range(number_of_players):
+            next_move = input(f"'hit' or 'stand' for player{player}: ")
 
-        # add cards to the user
-        if next_move == 'hit':
-            add_cards(user_cards)
-            total_user = calculator(user_cards)
-            if total_user > 21:
-                print("You went over 21!")
-                go_again =False
+            # add cards to the user
+            if next_move == 'hit':
+                add_cards(total_players[f"player{player+1}"])
+                total_user = calculator(total_players[f"player{player+1}"])
+                if total_user > 21:
+                    print("You went over 21!")
+                    total_players.pop(f'player{player + 1}')
 
-        # dealer add cards 
-        elif next_move == 'stand':
-            while sum(total_players['comp_cards']) < 17:
-                add_cards(total_players['comp_cards'])
+                    if len(total_players) == 1:
+                        go_again = False
+
+            # dealer add cards 
+            elif next_move == 'stand':
+                total_sum = add_cards(total_players[f"player{player+1}"])
+                total_sum_cards.append(total_sum)
+                total_players.pop(f'player{player + 1}')
+                
+                if len(total_players) == 1:
+                    while sum(total_players['comp_cards']) < 17:
+                        add_cards(total_players['comp_cards'])
+                        total_comp = calculator(total_players['comp_cards'])
+
+                    go_again = False
+
+            else:
+                print("Type 'y' or 'n' only!")
+
+
+            #Calculate the total and declare winner
+            if go_again == False:
                 total_comp = calculator(total_players['comp_cards'])
-
-            go_again = False
-
-        else:
-            print("Type 'y' or 'n' only!")
-
-        #Calculate the total and declare winner
-        if go_again == False:
-            final_score(total_user, total_comp)  
+                final_score(total_user, total_comp)  
 
 else:
     print("See you soon!")
