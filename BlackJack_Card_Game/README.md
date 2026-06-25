@@ -22,4 +22,4 @@ BlackJack is a card game where there is a user and a dealer. Rules are as follow
 * **Function:** Functions are created to reuse the code. Also, inbuilt function like `sum()` has been applied.
 * **Conditionals:** `if-else` statements are used repeatedly to check the conditions and if they match the rules.
 * **Loops:** `while` loop is used to keep the game going and ask the user to either 'hit' or 'stand'.
-* **List:** `list` have been used to keep track of cards of both the user and dealer. 
+* **Data Structures:** `dictionary` have been used to keep track of users while `list` have been used to keep track of cards and to sum them. 
